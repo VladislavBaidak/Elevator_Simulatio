@@ -29,12 +29,12 @@ class _FloorScreenState extends State<FloorScreen> {
     floorStack = _generateRandomFloorStack();
     currentFloor = 1;
     nextFloor = floorStack.isNotEmpty ? floorStack.first : 1;
-    elevatorDirection = 0; // 0 - стояти, 1 - рух вверх, -1 - рух вниз
+    elevatorDirection = 0; // 0 - stand, 1 - move up, -1 - move down
 
-    // Початок роботи ліфта
+    // Start of elevator operation
     startElevator();
 
-    // Ініціалізація плагіну локальних сповіщень
+    // Initializing the local notification plugin
     notifications = FlutterLocalNotificationsPlugin();
     var initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
@@ -43,15 +43,22 @@ class _FloorScreenState extends State<FloorScreen> {
     notifications.initialize(initializationSettings);
   }
 
+  void cancelElevatorTimer() {
+    elevatorTimer.cancel();
+  }
+
   @override
   void dispose() {
-    elevatorTimer.cancel();
+    cancelElevatorTimer(); // Відміна таймера при закритті екрану
     super.dispose();
   }
 
   void startElevator() {
-    elevatorTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      // Виведення значень стека, поточного та наступного чисел кожну секунду
+    elevatorTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
+      if (!mounted) {
+        timer.cancel(); // Зупинити таймер, якщо екран більше не прикріплений
+        return;
+      }
       print(
           "Stack: $floorStack, Current Floor: $currentFloor, Next Floor: $nextFloor");
 
@@ -77,16 +84,16 @@ class _FloorScreenState extends State<FloorScreen> {
         setState(() {});
 
         // Пауза на 2 секунди перед наступним кроком
-        Future.delayed(Duration(seconds: 2), () {
-          // Подсвічування поточного поверху жовтим та перехід до наступного числа
-          if (currentFloor == nextFloor) {
-            nextFloor = floorStack.removeAt(0);
-          }
-          setState(() {});
+        await Future.delayed(Duration(seconds: 2));
 
-          // Відправка фонового уведомлення
-          sendNotification(currentFloor);
-        });
+        // Подсвічування поточного поверху жовтим та перехід до наступного числа
+        if (currentFloor == nextFloor) {
+          nextFloor = floorStack.removeAt(0);
+        }
+        setState(() {});
+
+        // Відправка фонового уведомлення
+        sendNotification(currentFloor);
       }
 
       // Перевірка закінчення роботи ліфта
@@ -140,8 +147,7 @@ class _FloorScreenState extends State<FloorScreen> {
         itemBuilder: (context, index) {
           return ElevatedButton(
             onPressed: () {
-              // Обробка натискання на поверх
-              // Тут ви можете додати код для виведення деталей про цей поверх або інші дії
+              // Processing a click on the floor
             },
             style: ElevatedButton.styleFrom(
               primary: currentFloor == index + 1 && currentFloor != nextFloor

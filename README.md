@@ -25,7 +25,6 @@ The Elevator Simulation App is a Flutter application designed to provide a simul
    - [Random Floor Stack](#random-floor-stack)
    - [Notification Sending](#notification-sending)
 10. [Contributing](#contributing)
-11. [License](#license)
 
 ## Introduction
 
@@ -115,10 +114,4 @@ Notifications are sent to the user using the `FlutterLocalNotificationsPlugin`. 
 ## Contributing
 
 Contributions to the Elevator Simulation App are encouraged. Users encountering issues or with ideas for improvements can submit pull requests to contribute to the project's development.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-Feel free to tailor this documentation to align with your project's unique details and requirements.
 >>>>>>> b499342 (initial comit/)

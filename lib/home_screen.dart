@@ -25,25 +25,16 @@ class FirstScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-              SizedBox(height: 20), // Прогортка між текстом і картинкою
-              // Картинка
+              SizedBox(height: 20),
               Image.network(
                 'https://w7.pngwing.com/pngs/438/187/png-transparent-board-game-graphic-design-miniature-wargaming-design-game-text-logo-thumbnail.png',
-                width: 150.0, // Задайте ширину картинки за потребою
-                height: 150.0, // Задайте висоту картинки за потребою
-                // Можете також використовувати AssetImage для локальних ресурсів:
-                // AssetImage('assets/your_image.png'),
+                width: 150.0,
+                height: 150.0,
               ),
-
-              // Текст
-
-              SizedBox(height: 20), // Прогортка між текстом і кнопкою
-
-              // Кнопка
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => SecondScreen()),
                   );
