@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Elevator-Simulation-App
-=======
 # Elevator Simulation App Documentation
 
 ## Overview
@@ -121,4 +118,3 @@ Contributions to the Elevator Simulation App are encouraged. Users encountering 
 This project is licensed under the [MIT License](LICENSE).
 
 Feel free to tailor this documentation to align with your project's unique details and requirements.
->>>>>>> b499342 (initial comit/)
