@@ -15,7 +15,7 @@ class FirstScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Positioned(
-                top: 20.0, // Відстань від верхнього краю зображення
+                top: 20.0,
                 child: Container(
                   padding: EdgeInsets.all(10.0),
                   color: Color.fromARGB(255, 255, 255, 255),
@@ -26,8 +26,8 @@ class FirstScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Image.network(
-                'https://w7.pngwing.com/pngs/438/187/png-transparent-board-game-graphic-design-miniature-wargaming-design-game-text-logo-thumbnail.png',
+              Image.asset(
+                'assets/front.png', // Змініть шлях та ім'я файлу на свої
                 width: 150.0,
                 height: 150.0,
               ),

@@ -20,7 +20,7 @@ class _FloorScreenState extends State<FloorScreen> {
   late int currentFloor;
   late int nextFloor;
   late int elevatorDirection;
-  late Timer elevatorTimer;
+  late Timer? elevatorTimer;
   late FlutterLocalNotificationsPlugin notifications;
 
   @override
@@ -43,13 +43,9 @@ class _FloorScreenState extends State<FloorScreen> {
     notifications.initialize(initializationSettings);
   }
 
-  void cancelElevatorTimer() {
-    elevatorTimer.cancel();
-  }
-
   @override
   void dispose() {
-    cancelElevatorTimer(); // Відміна таймера при закритті екрану
+    elevatorTimer?.cancel();
     super.dispose();
   }
 
@@ -59,6 +55,7 @@ class _FloorScreenState extends State<FloorScreen> {
         timer.cancel(); // Зупинити таймер, якщо екран більше не прикріплений
         return;
       }
+
       print(
           "Stack: $floorStack, Current Floor: $currentFloor, Next Floor: $nextFloor");
 
@@ -72,7 +69,7 @@ class _FloorScreenState extends State<FloorScreen> {
       }
 
       // Рух ліфта
-      if (elevatorDirection != 0) {
+      if (elevatorDirection != 0 && mounted) {
         setState(() {
           currentFloor += elevatorDirection;
         });
@@ -85,12 +82,14 @@ class _FloorScreenState extends State<FloorScreen> {
 
         // Пауза на 2 секунди перед наступним кроком
         await Future.delayed(Duration(seconds: 2));
+        if (mounted) {
+          setState(() {});
+        }
 
         // Подсвічування поточного поверху жовтим та перехід до наступного числа
-        if (currentFloor == nextFloor) {
+        if (currentFloor == nextFloor && floorStack.isNotEmpty) {
           nextFloor = floorStack.removeAt(0);
         }
-        setState(() {});
 
         // Відправка фонового уведомлення
         sendNotification(currentFloor);
@@ -150,11 +149,11 @@ class _FloorScreenState extends State<FloorScreen> {
               // Processing a click on the floor
             },
             style: ElevatedButton.styleFrom(
-              primary: currentFloor == index + 1 && currentFloor != nextFloor
-                  ? Colors.yellow
-                  : (currentFloor == nextFloor && currentFloor == index + 1
-                      ? Colors.green
-                      : null),
+              primary: currentFloor == index + 1 && currentFloor == nextFloor
+                  ? Colors.green
+                  : currentFloor == index + 1 && currentFloor != nextFloor
+                      ? Colors.yellow
+                      : null,
             ),
             child: Text('Поверх ${index + 1}'),
           );
